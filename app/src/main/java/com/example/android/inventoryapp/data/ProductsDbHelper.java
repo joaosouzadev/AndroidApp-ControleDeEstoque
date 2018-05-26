@@ -23,7 +23,8 @@ public class ProductsDbHelper extends SQLiteOpenHelper {
                 + ProductsEntry.COLUMN_PRODUCT_NAME + " TEXT NOT NULL, "
                 + ProductsEntry.COLUMN_PRODUCT_DESCRIPTION + " TEXT NOT NULL, "
                 + ProductsEntry.COLUMN_PRODUCT_QUANTITY + " INTEGER NOT NULL, "
-                + ProductsEntry.COLUMN_PRODUCT_PRICE + " INTEGER NOT NULL);";
+                + ProductsEntry.COLUMN_PRODUCT_PRICE + " INTEGER NOT NULL, "
+                + ProductsEntry.COLUMN_PRODUCT_IMAGE + " BLOB);";
 
         db.execSQL(SQL_CREATE_PRODUCTS_TABLE);
     }

@@ -128,6 +128,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(ProductsEntry.COLUMN_PRODUCT_QUANTITY, quantityString);
         values.put(ProductsEntry.COLUMN_PRODUCT_PRICE, priceString);
 
+        //image
+
+        byte[] blobImage; // it can be sorted as null in the database
+        blobImage = ImageUtility.bitmapToBytes(bitmapImage1);
+        values.put(ProductsEntry.COLUMN_PRODUCT_IMAGE, blobImage);
+
         // This is a NEW product, so insert a new pet into the provider,
         // returning the content URI for the new product.
         Uri newUri = getContentResolver().insert(ProductsEntry.CONTENT_URI, values);
