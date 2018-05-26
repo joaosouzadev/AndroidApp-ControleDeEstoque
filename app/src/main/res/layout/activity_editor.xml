@@ -29,6 +29,7 @@
             android:orientation="vertical">
 
             <EditText
+                android:id="@+id/edit_product_name"
                 android:hint="Product's name"
                 android:inputType="textCapWords"
                 style="@style/EditorFieldStyle"/>
@@ -55,6 +56,7 @@
             android:orientation="vertical">
 
             <EditText
+                android:id="@+id/edit_product_description"
                 android:hint="Product's description"
                 android:inputType="textMultiLine"
                 style="@style/EditorFieldStyle"/>
@@ -82,6 +84,7 @@
 
             <!-- Input field -->
             <EditText
+                android:id="@+id/edit_product_quantity"
                 android:hint="# in stock"
                 android:inputType="textCapWords"
                 style="@style/EditorFieldStyle"/>
@@ -109,7 +112,7 @@
 
             <!-- Price field -->
             <EditText
-                android:id="@+id/edit_project_price"
+                android:id="@+id/edit_product_price"
                 style="@style/EditorFieldStyle"
                 android:layout_alignEnd="@+id/label_price_units"
                 android:layout_alignParentTop="true"
@@ -144,6 +147,7 @@
             android:orientation="vertical">
 
             <Button
+                android:id="@+id/button_product_upload_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Upload Image"

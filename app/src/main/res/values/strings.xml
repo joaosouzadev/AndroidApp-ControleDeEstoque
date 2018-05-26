@@ -13,4 +13,21 @@
 
     <string name="dummy_product_description">O Apple iPhone X é um smartphone iOS com características inovadoras que o tornam uma excelente opção para qualquer tipo de utilização. A tela de 5.8 polegadas coloca esse Apple no topo de sua categoria. A resolução também é alta: 2436x1125 pixel. As funcionalidades oferecidas pelo Apple iPhone X são muitas e top de linha. Começando pelo LTE 4G que permite a transferência de dados e excelente navegação na internet, além de conectividade Wi-fi e GPS presente no aparelho. Tem também leitor multimídia, videoconferência, e bluetooth. Enfatizamos a excelente memória interna de 256 GB mas sem a possibilidade de expansão.
         Câmera de 12 megapixel. A espessura de apenas 7.7 milímetros torna o Apple iPhone X um dos telefones mais finos que existem.</string>
+
+    <!-- Toast message in editor when new product has failed to be inserted [CHAR LIMIT=NONE] -->
+    <string name="editor_insert_product_failed">Error with saving product</string>
+
+    <string name="editor_insert_product_sucess">Product saved</string>
+
+    <!-- Dialog message when user is leaving editor but hasn't saved changes [CHAR LIMIT=NONE] -->
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+
+    <!-- Dialog button text for the option to discard a user's changes [CHAR LIMIT=20] -->
+    <string name="discard">Discard</string>
+
+    <!-- Dialog button text for the option to keep editing the current product [CHAR LIMIT=20] -->
+    <string name="keep_editing">Keep Editing</string>
+
+    <!-- Label for editor menu option to save pet and leave editor [CHAR LIMIT=20] -->
+    <string name="action_save">Save</string>
 </resources>
