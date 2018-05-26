@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableRow>
+
+        <TextView
+            style="@style/ListHeaderStyle"
+            android:layout_width="160dp"
+            android:layout_weight="1"
+            android:text="Products" />
+
+        <TextView
+            android:layout_width="63dp"
+            android:text="Price"
+            android:textAlignment="textStart"
+            android:paddingLeft="5dp"
+            style="@style/ListHeaderStyle"/>
+
+        <TextView
+            android:layout_width="59dp"
+            android:text="Qty."
+            style="@style/ListHeaderStyle"/>
+
+        <TextView
+            android:layout_width="59dp"
+            android:text="Buy"
+            style="@style/ListHeaderStyle"/>
+    </TableRow>
+
+</TableLayout>
