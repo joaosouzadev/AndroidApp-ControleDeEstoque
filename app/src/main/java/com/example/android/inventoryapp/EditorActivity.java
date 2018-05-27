@@ -8,22 +8,32 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.android.inventoryapp.data.ProductsContract;
 import com.example.android.inventoryapp.data.ProductsContract.ProductsEntry;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -53,6 +63,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private EditText mPriceEditText;
 
     private Button mUploadImageButton;
+
+    private ImageView mImageView;
+
+    private int PICK_IMAGE_REQUEST_CODE = 0;
 
     /**
      * Boolean flag that keeps track of whether the product has been edited (true) or not (false)
@@ -89,6 +103,16 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             mQuantityEditText = (EditText) findViewById(R.id.edit_product_quantity);
             mPriceEditText = (EditText) findViewById(R.id.edit_product_price);
             mUploadImageButton = (Button) findViewById(R.id.button_product_upload_image);
+            mImageView = (ImageView) findViewById(R.id.edit_product_image);
+
+            mUploadImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setType("image/*");
+                    startActivityForResult(intent, PICK_IMAGE_REQUEST_CODE);
+                }
+            });
 
             // Setup OnTouchListeners on all the input fields, so we can determine if the user
             // has touched or modified them. This will let us know if there are unsaved changes
@@ -98,6 +122,23 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             mQuantityEditText.setOnTouchListener(mTouchListener);
             mPriceEditText.setOnTouchListener(mTouchListener);
             mUploadImageButton.setOnTouchListener(mTouchListener);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PICK_IMAGE_REQUEST_CODE) {
+            /** You have to call the getData or getDataString to get the images address */
+            Uri uri = data.getData();
+
+            try {
+                InputStream inputStream = getContentResolver().openInputStream(uri);
+
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                mImageView.setImageBitmap(bitmap);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -111,6 +152,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String descriptionString = mDescriptionEditText.getText().toString().trim();
         String quantityString = mQuantityEditText.getText().toString().trim();
         String priceString = mPriceEditText.getText().toString().trim();
+        imageViewToByte(mImageView);
 
         if (mCurrentProductUri == null &&
                 TextUtils.isEmpty(nameString) && TextUtils.isEmpty(descriptionString) &&
@@ -127,14 +169,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(ProductsEntry.COLUMN_PRODUCT_DESCRIPTION, descriptionString);
         values.put(ProductsEntry.COLUMN_PRODUCT_QUANTITY, quantityString);
         values.put(ProductsEntry.COLUMN_PRODUCT_PRICE, priceString);
+        values.put(ProductsEntry.COLUMN_PRODUCT_IMAGE, imageViewToByte(mImageView));
 
-        //image
-
-        byte[] blobImage; // it can be sorted as null in the database
-        blobImage = ImageUtility.bitmapToBytes(bitmapImage1);
-        values.put(ProductsEntry.COLUMN_PRODUCT_IMAGE, blobImage);
-
-        // This is a NEW product, so insert a new pet into the provider,
+        // This is a NEW product, so insert a new product into the provider,
         // returning the content URI for the new product.
         Uri newUri = getContentResolver().insert(ProductsEntry.CONTENT_URI, values);
 
@@ -147,6 +184,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             Toast.makeText(this, getString(R.string.editor_insert_product_sucess),
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private byte[] imageViewToByte(ImageView image) {
+        Bitmap bitmap = ((BitmapDrawable)image.getDrawable()).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        return byteArray;
     }
 
     @Override
@@ -229,7 +274,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 ProductsEntry.COLUMN_PRODUCT_NAME,
                 ProductsEntry.COLUMN_PRODUCT_DESCRIPTION,
                 ProductsEntry.COLUMN_PRODUCT_QUANTITY,
-                ProductsEntry.COLUMN_PRODUCT_PRICE};
+                ProductsEntry.COLUMN_PRODUCT_PRICE,
+                ProductsEntry.COLUMN_PRODUCT_IMAGE};
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context

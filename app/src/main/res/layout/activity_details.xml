@@ -1,54 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_centerVertical="true"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     tools:context=".ProductDetailActivity">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <ImageView
+        android:layout_gravity="center"
         android:id="@+id/edit_product_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"
         android:src="@drawable/no_image" />
 
     <EditText
         android:id="@+id/edit_product_name"
-        style="@style/EditorFieldStyle"
         android:hint="Product's name"
         android:inputType="textCapWords"
         android:focusable="false"
-        android:outlineProvider="none"
-        android:background="@android:color/transparent"/>
-
+        android:background="@android:color/transparent"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:padding="10dp"
+        android:text="Iphone X"
+        android:textAlignment="center"/>
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="20dp"
+    android:paddingStart="20dp"
+    android:layout_gravity="center">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description:   "
+        android:textStyle="bold"
+        android:layout_gravity="center"/>
     <EditText
         android:id="@+id/edit_product_description"
         style="@style/EditorFieldStyle"
         android:hint="Product's description"
         android:inputType="textMultiLine"
         android:focusable="false"
-        android:background="@android:color/transparent"/>
+        android:background="@android:color/transparent"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"/>
+</LinearLayout>
 
-    <EditText
-        android:id="@+id/edit_product_quantity"
-        style="@style/EditorFieldStyle"
-        android:hint="# in stock"
-        android:inputType="textCapWords"
-        android:focusable="false"
-        android:background="@android:color/transparent"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingBottom="20dp"
+        android:textAlignment="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="In stock:  "
+            android:textAlignment="center"
+            android:textStyle="bold"/>
+        <EditText
+            android:id="@+id/edit_product_quantity"
+            style="@style/EditorFieldStyle"
+            android:hint="# in stock"
+            android:inputType="textCapWords"
+            android:focusable="false"
+            android:background="@android:color/transparent"
+            android:layout_width="wrap_content"
+            android:textAlignment="center"
+            android:layout_marginRight="30dp"/>
 
-    <EditText
-        android:id="@+id/edit_product_price"
-        style="@style/EditorFieldStyle"
-        android:hint="Price"
-        android:inputType="number"
-        android:focusable="false"
-        android:background="@android:color/transparent"/>
+        <Button
+            android:id="@+id/minus_button"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="-"/>
+
+        <Button
+            android:id="@+id/plus_button"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="+"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingBottom="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price: R$ "
+            android:textStyle="bold"/>
+        <EditText
+            android:id="@+id/edit_product_price"
+            style="@style/EditorFieldStyle"
+            android:hint="Price"
+            android:inputType="number"
+            android:focusable="false"
+            android:background="@android:color/transparent"/>
+    </LinearLayout>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ORDER MORE"/>
+        android:text="ORDER MORE"
+        android:layout_gravity="center"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DELETE"
+        android:layout_gravity="end"
+        android:paddingEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/delete"
+        android:background="@android:color/transparent"/>
+
 
 </LinearLayout>
+</ScrollView>

@@ -86,8 +86,8 @@
             <EditText
                 android:id="@+id/edit_product_quantity"
                 android:hint="# in stock"
-                android:inputType="textCapWords"
-                style="@style/EditorFieldStyle"/>
+                style="@style/EditorFieldStyle"
+                android:inputType="number"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -121,7 +121,6 @@
 
             <!-- Units for price ($) -->
             <TextView
-                android:id="@+id/label_price_units"
                 android:text="$"
                 style="@style/EditorUnitsStyle"/>
         </RelativeLayout>
@@ -144,7 +143,7 @@
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="2"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/button_product_upload_image"
@@ -153,6 +152,13 @@
                 android:text="Upload Image"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:textColor="@android:color/white"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Note: \nImage Size needs to be less than 1MB."
+                android:textSize="10dp"
+                android:layout_gravity="center"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -176,6 +182,7 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/edit_product_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/no_image"/>
