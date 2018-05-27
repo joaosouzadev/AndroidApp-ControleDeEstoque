@@ -58,7 +58,7 @@
             <EditText
                 android:id="@+id/edit_product_description"
                 android:hint="Product's description"
-                android:inputType="textMultiLine"
+                android:inputType="textCapSentences"
                 style="@style/EditorFieldStyle"/>
         </LinearLayout>
     </LinearLayout>

@@ -13,7 +13,11 @@
             style="@style/ListStyle"
             android:hint="Iphone X"
             android:layout_weight="1"
-            android:textAppearance="?android:textAppearanceMedium" />
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:singleLine="true"
+            android:text="Iphone x 256gb 15 megapixels"/>
 
         <LinearLayout
             android:layout_width="63dp"
