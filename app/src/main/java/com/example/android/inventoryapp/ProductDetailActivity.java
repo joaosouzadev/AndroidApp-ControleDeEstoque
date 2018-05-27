@@ -1,9 +1,11 @@
 package com.example.android.inventoryapp;
 
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -13,56 +15,47 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.android.inventoryapp.data.ProductsContract;
 import com.example.android.inventoryapp.data.ProductsContract.ProductsEntry;
 
-import static com.example.android.inventoryapp.data.ProductsContract.ProductsEntry._ID;
+import static com.example.android.inventoryapp.data.ProductsProvider.LOG_TAG;
 
 public class ProductDetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    /**
-     * Identifier for the product data loader
-     */
     private static final int EXISTING_PRODUCT_LOADER = 0;
 
-    /**
-     * Content URI for the existing product (null if it's a new product)
-     */
     private Uri mCurrentProductUri;
 
-    /**
-     * EditText field to enter the product's name
-     */
     private EditText mNameEditText;
 
-    /**
-     * EditText field to enter the product's description
-     */
     private EditText mDescriptionEditText;
 
-    /**
-     * EditText field to enter the product quantity
-     */
-    private EditText mQuantityEditText;
+    private EditText quantityTextView;
 
-    /**
-     * EditText field to enter the pet's gender
-     */
     private EditText mPriceEditText;
 
     private ImageView mImageView;
+
+    private EditText mIdEditText;
 
     private Button mPlusButton;
 
     private Button mMinusButton;
 
-    private int productQuantity;
+    private Button mSaveButton;
+
+    private Button mOrderButton;
+
+    private ImageButton mDeleteButton;
+
+    int productQuantityInt;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,45 +73,99 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         getLoaderManager().initLoader(EXISTING_PRODUCT_LOADER, null, this);
 
         // Find all relevant views that we will need to read user input from
+        mIdEditText = (EditText) findViewById(R.id.edit_product_id);
         mNameEditText = (EditText) findViewById(R.id.edit_product_name);
         mDescriptionEditText = (EditText) findViewById(R.id.edit_product_description);
-        mQuantityEditText = (EditText) findViewById(R.id.edit_product_quantity);
         mPriceEditText = (EditText) findViewById(R.id.edit_product_price);
         mImageView = (ImageView) findViewById(R.id.edit_product_image);
-
-        final Uri productUri = ContentUris.withAppendedId(ProductsContract.ProductsEntry.CONTENT_URI, 5);
+        quantityTextView = (EditText) findViewById(R.id.edit_product_quantity);
 
         // buttons
         mPlusButton = (Button) findViewById(R.id.plus_button);
+
         mPlusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (productQuantity > 0) {
-                    productQuantity = Integer.parseInt(mQuantityEditText.getText().toString().trim());
-                    if (productQuantity > 0) {
-                        productQuantity++;
-                    } else {
-                        Toast.makeText(ProductDetailActivity.this, "maior que 0", Toast.LENGTH_SHORT).show();
-                    }
-                    ContentValues values = new ContentValues();
-                    values.put(ProductsContract.ProductsEntry.COLUMN_PRODUCT_QUANTITY, productQuantity);
+                String quantityString = quantityTextView.getText().toString().trim();
+                productQuantityInt = Integer.parseInt(quantityString);
+                productQuantityInt++;
 
-                    int rowsAffected = getContentResolver().update(productUri, values, null, null);
-                    if (rowsAffected == 0) {
-                        Toast.makeText(ProductDetailActivity.this, "fail", Toast.LENGTH_SHORT).show();
-                    } else {
-                        if (!(productQuantity < 1)) {
-                            Toast.makeText(ProductDetailActivity.this, "success", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                } else {
-                    Toast.makeText(ProductDetailActivity.this, "maior que 0", Toast.LENGTH_SHORT).show();
-                }
-                mQuantityEditText.setText(Integer.toString(productQuantity));
+                ContentValues values = new ContentValues();
+                values.put(ProductsEntry.COLUMN_PRODUCT_QUANTITY, productQuantityInt);
+
+                getContentResolver().update(mCurrentProductUri, values, null, null);
+                Log.d(LOG_TAG, "URI for update: " + mCurrentProductUri);
+                Toast.makeText(ProductDetailActivity.this, getString(R.string.editor_update_product_successful), Toast.LENGTH_SHORT).show();
             }
         });
 
         mMinusButton = (Button) findViewById(R.id.minus_button);
+
+        mMinusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String quantityString = quantityTextView.getText().toString().trim();
+                productQuantityInt = Integer.parseInt(quantityString);
+                if (productQuantityInt == 0){
+                    Toast.makeText(ProductDetailActivity.this, getString(R.string.editor_quantity_must_be_positive), Toast.LENGTH_SHORT).show();
+                } else {
+                    productQuantityInt--;
+
+                    ContentValues values = new ContentValues();
+                    values.put(ProductsEntry.COLUMN_PRODUCT_QUANTITY, productQuantityInt);
+
+                    getContentResolver().update(mCurrentProductUri, values, null, null);
+                    Log.d(LOG_TAG, "URI for update: " + mCurrentProductUri);
+                    Toast.makeText(ProductDetailActivity.this, getString(R.string.editor_update_product_successful), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        mSaveButton = (Button) findViewById(R.id.save_button);
+
+        mSaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String quantityString = quantityTextView.getText().toString().trim();
+                productQuantityInt = Integer.parseInt(quantityString);
+                if (productQuantityInt == 0){
+                    Toast.makeText(ProductDetailActivity.this, getString(R.string.editor_quantity_save), Toast.LENGTH_SHORT).show();
+                } else {
+                    ContentValues values = new ContentValues();
+                    values.put(ProductsEntry.COLUMN_PRODUCT_QUANTITY, productQuantityInt);
+
+                    getContentResolver().update(mCurrentProductUri, values, null, null);
+                    Log.d(LOG_TAG, "URI for update: " + mCurrentProductUri);
+                    Toast.makeText(ProductDetailActivity.this, getString(R.string.editor_update_product_successful), Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+        });
+
+        mOrderButton = (Button) findViewById(R.id.order_button);
+
+        mOrderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/html");
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[] { "supplier@gmail.com" });
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Request Order");
+                intent.putExtra(Intent.EXTRA_TEXT, "Hi, I need to order X amount of the Y product \n\n Thank you :)");
+
+                startActivity(Intent.createChooser(intent, "Send Email"));
+            }
+        });
+
+        mDeleteButton = (ImageButton) findViewById(R.id.delete_button);
+
+        mDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDeleteConfirmationDialog();
+
+            }
+        });
     }
 
     @Override
@@ -126,6 +173,7 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         // Since the editor shows all product attributes, define a projection that contains
         // all columns from the product table
         String[] projection = {
+                ProductsEntry._ID,
                 ProductsEntry.COLUMN_PRODUCT_NAME,
                 ProductsEntry.COLUMN_PRODUCT_DESCRIPTION,
                 ProductsEntry.COLUMN_PRODUCT_QUANTITY,
@@ -154,6 +202,7 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         // (This should be the only row in the cursor)
         if (cursor.moveToFirst()) {
             // Find the columns of pet attributes that we're interested in
+            int idColumnIndex = cursor.getColumnIndex(ProductsEntry._ID);
             int nameColumnIndex = cursor.getColumnIndex(ProductsEntry.COLUMN_PRODUCT_NAME);
             int descriptionColumnIndex = cursor.getColumnIndex(ProductsEntry.COLUMN_PRODUCT_DESCRIPTION);
             int quantityColumnIndex = cursor.getColumnIndex(ProductsEntry.COLUMN_PRODUCT_QUANTITY);
@@ -161,6 +210,7 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
             int imageColumnIndex = cursor.getColumnIndex(ProductsEntry.COLUMN_PRODUCT_IMAGE);
 
             // Extract out the value from the Cursor for the given column index
+            String id = cursor.getString(idColumnIndex);
             String name = cursor.getString(nameColumnIndex);
             String description = cursor.getString(descriptionColumnIndex);
             int quantity = cursor.getInt(quantityColumnIndex);
@@ -170,9 +220,10 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
             Bitmap bitmap = BitmapFactory.decodeByteArray(imageStored, 0, imageStored.length);
 
             // Update the views on the screen with the values from the database
+            mIdEditText.setText(id);
             mNameEditText.setText(name);
             mDescriptionEditText.setText(description);
-            mQuantityEditText.setText(Integer.toString(quantity));
+            quantityTextView.setText(Integer.toString(quantity));
             mPriceEditText.setText(Integer.toString(price));
             mImageView.setImageBitmap(bitmap);
         }
@@ -183,7 +234,54 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         // If the loader is invalidated, clear out all the data from the input fields.
         mNameEditText.setText("");
         mDescriptionEditText.setText("");
-        mQuantityEditText.setText("");
+        quantityTextView.setText("");
         mPriceEditText.setText("");
+    }
+
+    private void showDeleteConfirmationDialog() {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the positive and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Delete this product?");
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Delete" button, so delete the product.
+                deleteProduct();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog
+                // and continue editing the product.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void deleteProduct() {
+        // Only perform the delete if this is an existing product.
+        if (mCurrentProductUri != null) {
+            // Call the ContentResolver to delete the product at the given content URI.
+            // Pass in null for the selection and selection args because the mCurrentProductUri
+            // content URI already identifies the product that we want.
+            int rowsDeleted = getContentResolver().delete(mCurrentProductUri, null, null);
+
+            // Show a toast message depending on whether or not the delete was successful.
+            if (rowsDeleted == 0) {
+                // If no rows were deleted, then there was an error with the delete.
+                Toast.makeText(this, "Delete failed", Toast.LENGTH_SHORT).show();
+            } else {
+                // Otherwise, the delete was successful and we can display a toast.
+                Toast.makeText(this, "Product removed", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        // Close the activity
+        finish();
     }
 }

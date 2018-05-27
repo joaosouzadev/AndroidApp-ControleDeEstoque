@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         values.put(ProductsEntry.COLUMN_PRODUCT_DESCRIPTION, getString(R.string.dummy_product_description));
         values.put(ProductsEntry.COLUMN_PRODUCT_QUANTITY, 5);
         values.put(ProductsEntry.COLUMN_PRODUCT_PRICE, 5000);
+        values.put(ProductsEntry.COLUMN_PRODUCT_IMAGE, "R.drawable.no_image");
 
         // Insert a new row for Toto into the provider using the ContentResolver.
         // Use the {@link PetEntry#CONTENT_URI} to indicate that we want to insert

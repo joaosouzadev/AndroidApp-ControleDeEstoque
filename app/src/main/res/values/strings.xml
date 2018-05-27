@@ -11,7 +11,7 @@
     <!-- Subtitle text for the empty view that prompts the user to add a pet [CHAR LIMIT=50] -->
     <string name="empty_view_subtitle_text">Click on the \'plus\' button to add a product!</string>
 
-    <string name="dummy_product_description">O Apple iPhone X é um smartphone iOS com características inovadoras que o tornam uma excelente opção para qualquer tipo de utilização. A tela de 5.8 polegadas coloca esse Apple no topo de sua categoria. A resolução também é alta: 2436x1125 pixel. As funcionalidades oferecidas pelo Apple iPhone X são muitas e top de linha. Começando pelo LTE 4G que permite a transferência de dados e excelente navegação na internet, além de conectividade Wi-fi e GPS presente no aparelho. Tem também leitor multimídia, videoconferência, e bluetooth. Enfatizamos a excelente memória interna de 256 GB mas sem a possibilidade de expansão.
+    <string name="dummy_product_description">Tela de 5.8 polegadas. Resolução de 2436x1125 pixel. Memória interna de 256 GB.
         Câmera de 12 megapixel. A espessura de apenas 7.7 milímetros torna o Apple iPhone X um dos telefones mais finos que existem.</string>
 
     <!-- Toast message in editor when new product has failed to be inserted [CHAR LIMIT=NONE] -->
@@ -34,4 +34,5 @@
     <string name="editor_update_product_successful">Product updated</string>
     <string name="editor_update_product_failed">Error with updating product</string>
     <string name="editor_quantity_must_be_positive">No negative values allowed!</string>
+    <string name="editor_quantity_save">To save, quantity needs to be greater than 0</string>
 </resources>

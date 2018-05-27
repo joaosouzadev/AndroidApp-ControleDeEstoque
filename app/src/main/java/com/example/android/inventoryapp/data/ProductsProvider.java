@@ -17,21 +17,12 @@ import com.example.android.inventoryapp.data.ProductsContract.ProductsEntry;
 
 public class ProductsProvider extends ContentProvider {
 
-    /**
-     * Tag for the log messages
-     */
     public static final String LOG_TAG = ProductsProvider.class.getSimpleName();
 
     private ProductsDbHelper mDbHelper;
 
-    /**
-     * URI matcher code for the content URI for the products table
-     */
     private static final int PRODUCTS = 100;
 
-    /**
-     * URI matcher code for the content URI for a single product in the products table
-     */
     private static final int PRODUCT_ID = 101;
 
     /**
@@ -227,8 +218,7 @@ public class ProductsProvider extends ContentProvider {
     }
 
     private int updateProduct(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        // If the {@link CakeEntry#COLUMN_CAKE_NAME} key is present,
-        // check that the name value is not null.
+
         if (values.containsKey(ProductsEntry.COLUMN_PRODUCT_NAME)) {
             String name = values.getAsString(ProductsEntry.COLUMN_PRODUCT_NAME);
             if (name == null) {
@@ -236,8 +226,6 @@ public class ProductsProvider extends ContentProvider {
             }
         }
 
-        // If the {@link CakeEntry#COLUMN_CAKE_PRICE} key is present,
-        // check that the price value is valid.
         if (values.containsKey(ProductsEntry.COLUMN_PRODUCT_PRICE)) {
             // Check that the price is greater than or equal to 0
             Integer price = values.getAsInteger(ProductsEntry.COLUMN_PRODUCT_PRICE);
@@ -246,8 +234,6 @@ public class ProductsProvider extends ContentProvider {
             }
         }
 
-        // If the {@link CakeEntry#COLUMN_CAKE_QUANTITY} key is present,
-        // check that the quantity value is valid.
         if (values.containsKey(ProductsEntry.COLUMN_PRODUCT_QUANTITY)) {
             // Check that the quantity is greater than or equal to 0
             Integer quantity = values.getAsInteger(ProductsEntry.COLUMN_PRODUCT_QUANTITY);
@@ -256,8 +242,6 @@ public class ProductsProvider extends ContentProvider {
             }
         }
 
-        // If the {@link CakeEntry#COLUMN_CAKE_DESCRIPTION} key is present,
-        // check that the description value is not null.
         if (values.containsKey(ProductsEntry.COLUMN_PRODUCT_DESCRIPTION)) {
             String description = values.getAsString(ProductsEntry.COLUMN_PRODUCT_DESCRIPTION);
             if (description == null) {

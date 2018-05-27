@@ -37,46 +37,17 @@ import java.io.InputStream;
 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    /**
-     * Content URI for the existing product (null if it's a new product)
-     */
     private Uri mCurrentProductUri;
-
-    /**
-     * EditText field to enter the product's name
-     */
     private EditText mNameEditText;
-
-    /**
-     * EditText field to enter the product's description
-     */
     private EditText mDescriptionEditText;
-
-    /**
-     * EditText field to enter the product quantity
-     */
     private EditText mQuantityEditText;
-
-    /**
-     * EditText field to enter the pet's gender
-     */
     private EditText mPriceEditText;
-
     private Button mUploadImageButton;
-
     private ImageView mImageView;
-
     private int PICK_IMAGE_REQUEST_CODE = 0;
 
-    /**
-     * Boolean flag that keeps track of whether the product has been edited (true) or not (false)
-     */
     private boolean mProductHasChanged = false;
 
-    /**
-     * OnTouchListener that listens for any user touches on a View, implying that they are modifying
-     * the view, and we change the mProductHasChanged boolean to true.
-     */
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -128,7 +99,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_IMAGE_REQUEST_CODE) {
-            /** You have to call the getData or getDataString to get the images address */
+            /* You have to call the getData or getDataString to get the images address */
             Uri uri = data.getData();
 
             try {
@@ -157,8 +128,27 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         if (mCurrentProductUri == null &&
                 TextUtils.isEmpty(nameString) && TextUtils.isEmpty(descriptionString) &&
                 TextUtils.isEmpty(quantityString) && TextUtils.isEmpty(priceString)) {
-            // Since no fields were modified, we can return early without creating a new pet.
+            Toast.makeText(this, "Not possible to add product with no information", Toast.LENGTH_SHORT).show();
+            // Since no fields were modified, we can return early without creating a new product.
             // No need to create ContentValues and no need to do any ContentProvider operations.
+            return;
+        }
+
+        // check all edittext information and handle errors
+        if (TextUtils.isEmpty(nameString)) {
+            Toast.makeText(this, "Insert a name for the product before saving", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (TextUtils.isEmpty(descriptionString)) {
+            Toast.makeText(this, "Insert a description for the product before saving", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (TextUtils.isEmpty(quantityString)) {
+            Toast.makeText(this, "Insert a quantity for the product before saving", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (TextUtils.isEmpty(priceString)) {
+            Toast.makeText(this, "Insert a price for the product before saving", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -189,7 +179,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private byte[] imageViewToByte(ImageView image) {
         Bitmap bitmap = ((BitmapDrawable)image.getDrawable()).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 80, stream);
         byte[] byteArray = stream.toByteArray();
         return byteArray;
     }
