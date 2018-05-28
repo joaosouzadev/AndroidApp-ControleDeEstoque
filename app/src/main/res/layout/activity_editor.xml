@@ -114,7 +114,6 @@
             <EditText
                 android:id="@+id/edit_product_price"
                 style="@style/EditorFieldStyle"
-                android:layout_alignEnd="@+id/label_price_units"
                 android:layout_alignParentTop="true"
                 android:hint="Price"
                 android:inputType="number" />
@@ -157,7 +156,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Note: \nImage Size needs to be less than 1MB."
-                android:textSize="10dp"
+                android:textSize="10sp"
                 android:layout_gravity="center"/>
         </LinearLayout>
     </LinearLayout>

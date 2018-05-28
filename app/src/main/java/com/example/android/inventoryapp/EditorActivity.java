@@ -28,7 +28,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.android.inventoryapp.data.ProductsContract;
 import com.example.android.inventoryapp.data.ProductsContract.ProductsEntry;
 
 import java.io.ByteArrayOutputStream;
@@ -151,6 +150,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             Toast.makeText(this, "Insert a price for the product before saving", Toast.LENGTH_LONG).show();
             return;
         }
+        if (mImageView.getDrawable().getConstantState().equals(getDrawable(R.drawable.no_image).getConstantState())){
+            Toast.makeText(this, "Insert a image for the product before saving", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         // Create a ContentValues object where column names are the keys,
         // and product attributes from the editor are the values.
@@ -174,6 +177,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             Toast.makeText(this, getString(R.string.editor_insert_product_sucess),
                     Toast.LENGTH_SHORT).show();
         }
+        finish();
     }
 
     private byte[] imageViewToByte(ImageView image) {
@@ -199,7 +203,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
                 saveProduct();
-                finish();
                 return true;
             // Respond to a click on the "Up" arrow button in the app bar
             case android.R.id.home:
@@ -258,7 +261,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         // Since the editor shows all product attributes, define a projection that contains
-        // all columns from the pet table
+        // all columns from the product table
         String[] projection = {
                 ProductsEntry._ID,
                 ProductsEntry.COLUMN_PRODUCT_NAME,
@@ -269,7 +272,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
-                mCurrentProductUri,         // Query the content URI for the current pet
+                mCurrentProductUri,         // Query the content URI for the current product
                 projection,             // Columns to include in the resulting Cursor
                 null,                   // No selection clause
                 null,                   // No selection arguments
@@ -286,7 +289,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // Proceed with moving to the first row of the cursor and reading data from it
         // (This should be the only row in the cursor)
         if (cursor.moveToFirst()) {
-            // Find the columns of pet attributes that we're interested in
+            // Find the columns of product attributes that we're interested in
             int nameColumnIndex = cursor.getColumnIndex(ProductsEntry.COLUMN_PRODUCT_NAME);
             int descriptionColumnIndex = cursor.getColumnIndex(ProductsEntry.COLUMN_PRODUCT_DESCRIPTION);
             int quantityColumnIndex = cursor.getColumnIndex(ProductsEntry.COLUMN_PRODUCT_QUANTITY);
@@ -332,7 +335,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         builder.setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Keep editing" button, so dismiss the dialog
-                // and continue editing the pet.
+                // and continue editing the product.
                 if (dialog != null) {
                     dialog.dismiss();
                 }

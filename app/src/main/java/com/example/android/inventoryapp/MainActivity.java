@@ -20,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.example.android.inventoryapp.data.ProductsContract;
 import com.example.android.inventoryapp.data.ProductsContract.ProductsEntry;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -84,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     /**
-     * Helper method to insert hardcoded pet data into the database. For debugging purposes only.
+     * Helper method to insert hardcoded product data into the database. For debugging purposes only.
      */
     private void insertDummyProduct() {
         // Create a ContentValues object where column names are the keys,
@@ -97,14 +96,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         values.put(ProductsEntry.COLUMN_PRODUCT_IMAGE, "R.drawable.no_image");
 
         // Insert a new row for Toto into the provider using the ContentResolver.
-        // Use the {@link PetEntry#CONTENT_URI} to indicate that we want to insert
-        // into the pets database table.
+        // Use the {@link ProductsEntry#CONTENT_URI} to indicate that we want to insert
+        // into the products database table.
         // Receive the new content URI that will allow us to access Toto's data in the future.
         Uri newUri = getContentResolver().insert(ProductsEntry.CONTENT_URI, values);
     }
 
     /**
-     * Helper method to delete all pets in the database.
+     * Helper method to delete all products in the database.
      */
     private void deleteAllProducts() {
         int rowsDeleted = getContentResolver().delete(ProductsEntry.CONTENT_URI, null, null);

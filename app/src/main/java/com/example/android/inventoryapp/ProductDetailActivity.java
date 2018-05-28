@@ -150,8 +150,8 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/html");
                 intent.putExtra(Intent.EXTRA_EMAIL, new String[] { "supplier@gmail.com" });
-                intent.putExtra(Intent.EXTRA_SUBJECT, "Request Order");
-                intent.putExtra(Intent.EXTRA_TEXT, "Hi, I need to order X amount of the Y product \n\n Thank you :)");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Request Order: " + mNameEditText.getText());
+                intent.putExtra(Intent.EXTRA_TEXT, "Hi, I am contacting you because I need to order some more " + mNameEditText.getText() + "\n\nThank you :)");
 
                 startActivity(Intent.createChooser(intent, "Send Email"));
             }
@@ -182,7 +182,7 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
-                mCurrentProductUri,         // Query the content URI for the current pet
+                mCurrentProductUri,         // Query the content URI for the current product
                 projection,             // Columns to include in the resulting Cursor
                 null,                   // No selection clause
                 null,                   // No selection arguments
@@ -201,7 +201,7 @@ public class ProductDetailActivity extends AppCompatActivity implements LoaderMa
         // Proceed with moving to the first row of the cursor and reading data from it
         // (This should be the only row in the cursor)
         if (cursor.moveToFirst()) {
-            // Find the columns of pet attributes that we're interested in
+            // Find the columns of product attributes that we're interested in
             int idColumnIndex = cursor.getColumnIndex(ProductsEntry._ID);
             int nameColumnIndex = cursor.getColumnIndex(ProductsEntry.COLUMN_PRODUCT_NAME);
             int descriptionColumnIndex = cursor.getColumnIndex(ProductsEntry.COLUMN_PRODUCT_DESCRIPTION);

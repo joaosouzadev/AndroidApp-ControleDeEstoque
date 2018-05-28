@@ -119,11 +119,11 @@ public class ProductsProvider extends ContentProvider {
 
         // Check that the description is not null
         String description = values.getAsString(ProductsEntry.COLUMN_PRODUCT_DESCRIPTION);
-        if (TextUtils.isEmpty(name)) {
+        if (TextUtils.isEmpty(description)) {
             throw new IllegalArgumentException("Product requires a description");
         }
 
-        // Check that the quantity is not null and that it's greater than or equal to 0 kg
+        // Check that the quantity is not null and that it's greater than or equal to 0
         Integer quantity = values.getAsInteger(ProductsEntry.COLUMN_PRODUCT_QUANTITY);
         if (quantity == null) {
             throw new IllegalArgumentException("Product requires valid price");
@@ -132,12 +132,12 @@ public class ProductsProvider extends ContentProvider {
             throw new IllegalArgumentException("Product requires valid price");
         }
 
-        // Check that the quantity is not null and that it's greater than or equal to 0 kg
+        // Check that the price is not null and that it's greater than or equal to 0
         Integer price = values.getAsInteger(ProductsEntry.COLUMN_PRODUCT_PRICE);
         if (price == null) {
             throw new IllegalArgumentException("Product requires valid price");
         }
-        if (price != null && quantity < 0) {
+        if (price != null && price < 0) {
             throw new IllegalArgumentException("Product requires valid price");
         }
 
@@ -153,7 +153,7 @@ public class ProductsProvider extends ContentProvider {
             return null;
         }
 
-        // Notify all listeners that the data has changed for the pet content URI
+        // Notify all listeners that the data has changed for the product content URI
         // uri: content://com.example.android.inventoryapp/products
         getContext().getContentResolver().notifyChange(uri, null);
 
@@ -206,7 +206,7 @@ public class ProductsProvider extends ContentProvider {
             case PRODUCTS:
                 return updateProduct(uri, contentValues, selection, selectionArgs);
             case PRODUCT_ID:
-                // For the CAKE_ID code, extract out the ID from the URI,
+                // For the PRODUCT_ID code, extract out the ID from the URI,
                 // so we know which row to update. Selection will be "_id=?" and selection
                 // arguments will be a String array containing the actual ID.
                 selection = ProductsEntry._ID + "=?";
